@@ -1,6 +1,8 @@
 #!/bin/bash
 
-#Check the given parameter is a file, directory, or other type
+# Script to accept an unlimited number of files and directories as arguments
+
+# Check the given parameter is a file, directory, or other type
 if [ $# -eq 0 ] 
 then
    echo "No arguments provided"

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Shell script that accepts the file or directory name as an argument instead of prompting the user to enter it
+
 #Check the given parameter is a file, directory, or other type
 if [ $# -eq 0 ] 
 then
