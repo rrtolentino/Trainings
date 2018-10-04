@@ -1,0 +1,13 @@
+Bash Scripting
+
+Script
+- Contains a series of commands.
+- An interpreter executes in the script.
+- Anything you can put on the command line can be put in a script.
+- Create for automating tasks.
+
+SheBang
+- Tells what interpreter to be use for the commands in the scripts.
+- If SheBang not present, the current shell being used is used instead.
+
+test
