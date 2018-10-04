@@ -1,0 +1,95 @@
+Git Getting Started
+
+Git - decentralised or distributed version system
+Linus Torvalds - Creator
+
+https://github.com/rrtolentino/github-udemy
+
+roel:Projects roel$ git --version
+git version 2.17.1 (Apple Git-112)
+
+roel:~ roel$ mkdir Git-Udemy
+roel:~ roel$ cd Git-Udemy/
+roel:Git-Udemy roel$ git config --global user.name "Roel Tolentino"
+roel:Git-Udemy roel$ git config --global user.email "roel@opswerks.com"
+roel:Git-Udemy roel$ git config --global --list
+user.name=Roel Tolentino
+user.email=roel@opswerks.com
+
+Workspace > Staging > Repository > Remote Repository
+Git status > git add > git commit > git push
+
+Workspace - working directory.
+Staging Area - used to prepare for the next commit.
+Repository - Collection of files managed by git. And the history of all of it
+
+Commits - snapshots, file changes,
+Branch - a place to save changes on a timeline
+
+Github - git repository hosting service.
+
+Git ls-files - command to see list of files that are being tracked.
+
+Git commit -am “comment” - to express commit (add and commit). Will work for modified files.
+
+Git reset HEAD <file> - to unstage add/modified file.
+git checkout -- README.md - to remove the changes from a modified file and clean the status modified.
+
+GIT ALIASING
+git log --oneline --graph --decorate --all
+git config --global alias.hist "log --online --graph --decorate --all"
+
+Rename a file
+Git mv <filename> <new filename>
+File will be renamed but still need to be commit.
+Git commit -m “comment”
+
+Remove a file
+Git rm <file>
+Will be deleted but still need to commit.
+Git commit -m “comment”
+
+Git add -u (to update the status for renamed files via bash)
+Git add -A (to update all changes on all files staged or not)
+
+IGNORING UNWANTED FILES/FOLDERS
+Create a .gitignore file and list the files to be ignored. Wildcards are accepted.
+Then add and commit the .gitignore file
+
+Git diff <commit id> <commit id or HEAD> - show the difference between commits.
+
+Branch - timeline of commits
+Branch names are just labels
+
+Types of Merges
+1. Fast forward merge - simplest case. can be disabled.
+2. Automatic merges - happens when git detects non-conflict on branches.
+3. Manual merge - happens when unable to resolve conflicts.
+
+Special markers/pointers
+1. HEAD - points to last commit of current branch. Can be manually moved.
+
+Git checkout -b <branch name> - to automatically create branch and checkout files.
+Git merge <branch to merge>
+Git branch -d <branch name> - to delete a branch
+
+Conflict resolution
+Git mergetool
+
+Marking special events with tagging
+Git tag <tag name>
+git tag -a <tag name> -m “<milestone comment>“
+
+Saving work with Stashing
+Git stash - to temporarily save current changes before committing and repoint head to previous.
+Git stash pop - to pop stashed updates for committing.
+
+Types of Reset
+1. Soft - simply change HEAD pointer.
+2. Mixed - includes upstaging of other changes.
+3. Hard - most destructive of reset modes. Points the HEAD pointer to a new location. Pending changes will be wiped out together with the staged items.
+
+Git reset <commit id> —<type of reset>
+
+Git log - shows commit ids
+Git reflog - show actions taken in the repository.
