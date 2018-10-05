@@ -10,4 +10,33 @@ SheBang
 - Tells what interpreter to be use for the commands in the scripts.
 - If SheBang not present, the current shell being used is used instead.
 
-test
+Exit Status / Return Codes
+- Every command returns an exit status
+- Range from 0 to 255
+- 0 is success
+- Other than 0 is an error condition
+- Use for error checking
+- Use man for exit statuses.
+- $? return the code of the previously executed command.
+- && (AND) both commands will be executed if and only if the first command is successful
+- || (OR) only 1 command will be executed. If the first fails only then the second command shall be executed.
+- Use exit command to explicitly define the return code (ex: exit 0, exit 1)
+- Exit command will stop the execution of the script.
+
+Functions
+- Block of reusable code that perform an action and returns an exit code.
+- Must be defined before use.
+- Uses return as exit status.
+
+Wildcards
+- A character or string used for pattern matching
+- Globbing expands the wildcard pattern into a list of files and/or directories.
+- Can be used with most commands.
+- * matches anything
+- ? Matches only one character
+- [ ] Matches any of the character within
+- [!] Matches any of the characters NOT included within
+- [-] use hyper for ranges ex: 1-6
+- Predefined named character classes [[:alpha:]], [[:alnum:]], [[:digit:]], [[:lower:]], [[:space:]], [[:upper:]]
+- Use backslash (\) if want to match a wildcard character.
+

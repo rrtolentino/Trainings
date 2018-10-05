@@ -9,6 +9,4 @@ file_count() {
    echo
 }
 
-file_count /etc
-file_count /var
-file_count /usr/bin
+for i in /etc /var /usr/bin; do file_count $i; done
