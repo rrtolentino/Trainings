@@ -40,3 +40,13 @@ Wildcards
 - Predefined named character classes [[:alpha:]], [[:alnum:]], [[:digit:]], [[:lower:]], [[:space:]], [[:upper:]]
 - Use backslash (\) if want to match a wildcard character.
 
+Logging with logger
+Use the -p option to specify the facility and severity for the message.
+- Logger -p <facility>.serverity “<message>”
+To tag a message. For easier searching.
+- Logger -t <tag name> -p <facility>.serverity “<message>”
+To include the process id (pid)
+- Logger -i -t <tag name> “<message>”
+To send the message to the screen while logging.
+- Logger -s -p <facility>.serverity “<message>”
+
