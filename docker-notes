@@ -1,0 +1,190 @@
+Docker
+
+Docker CE (Community Edition) - Free
+Docker EE (Enterprise Edition) - Paid with Support. Certified on specific platforms.
+
+Edge - means beta. Released monthly, stabled quarterly. 
+- Gets new features first, but only supported for a month
+
+Docker version - shows version for client and server.
+Docker info - shows configuration values for the engine.
+
+Image - is the application we want to run. The binaries, libraries, and source code that makes up the application.
+Container - running instance of an image. You can have many containers running the same image.
+Registry - hub.docker.com
+
+docker container run --publish 80:80 nginx
+- Downloads image “nginx” from registry (Docker hub)
+- Started a new container from that image
+- Opened port 80 on the host IP
+
+docker container run --publish 80:80 --detach nginx
+- To run in background
+
+Docker container ls - list the container
+Docker containter ls -a - list all active and inactive containers.
+
+** docker container run always starts a new container.
+** use docker container start instead to start an existing stopped container.
+
+To specify a name for container to be run.
+- Docker container run --publish 80:80 --detach --name webhost nginx
+
+Docker container logs <container name> - to show the logs for a particular container
+
+Docker container rm <container id> - to delete a non-running container.  Rm -f to force
+
+What happens in ‘docker container run’
+- Looks for the image locally in image cache 
+- If it doesn’t find locally, then looks for remote image repo. (Docker hub)
+- Downloads the latest version (if no version is provided)
+- Create a new container based on that image and prepares to start.
+- Gives it a virtual IP on a private network inside docker engine.
+- Opens up port 80 on host and forwards to port 80 in container
+- Starts container by using the CMD  in the image docker file.
+
+Docker container top - process list in one container
+Docker container inspect - details of one container config
+Docker container stats - performance stats for all containers in real time stream.
+
+Getting Shell Inside Containers
+Docker container run -it - start new container interactively
+Docker container exec -it - run additional command in existing container.
+- Interactive (-i) and pseudo tty (-t)
+
+Alpine Linux - A small security-focused distribution of Linux.
+
+Docker container port <container> - show what ports are open for a running container.
+
+Docker Network Defaults:
+- Each container is connected to a private virtual network called “bridge”
+- Each virtual network routes through NAT firewall on host IP
+- All containers on a virtual network can talk to each other without -p
+- Best practice is to create a new virtual network for each app.
+    - Ex: network “my_web_app” for mysql and php containers.
+- Defaults already works well in many cases. But easy to swap out parts to customize.
+- May use other docker network drivers to gain new abilities.
+
+￼
+
+Docker network ls - list networks
+Docket network inspect - details for a specific network
+Docker network create --driver - to create a new virtual network
+Docker network connect/disconnect - putting/removing a network from a container
+
+--network bridge - default docker virtual network, which is NAT’ed behind the host IP
+--network host - it gains performance by skipping virtual networks but sacrifices security of container model. It skips the virtual network and attached directly to the host’s network interface.
+--network none - removes eth0 and only leaves you with localhost interface in container.
+
+Docker Networks: Default Security
+- Create your apps so frontend/backend sit on the same docker network.
+- The inter-communications never leaves host.
+- All externally exposed ports closed by default
+- You must manually expose via -p
+
+Docker DNS
+- Docker defaults the hostname to the container’s name but you can also set aliases
+
+
+What’s an Image
+- Application binaries and dependencies
+- Metadata about the image and how to run the image.
+- Official definition: “An image is an ordered collection of root filesystem changes and the corresponding execution parameters for use within a container runtime.”
+- Not a complete OS. No kernel, kernel modules.
+
+Docker image history - shows layers of changes made in an image.	
+
+
+Dockerfile
+
+FROM - usually a minimal linux distribution
+ENV - environment variable to be used 
+RUN - executes shell commands. 
+EXPOSE - exposes open port to the host machine
+CMD - required parameter. Final parameter to be run every time a container is lunch. Only one command is allowed.
+WORKDIR - changes working directory
+COPY - copies a file to working directory.
+
+Docker image built -t <tag> - to create an image from Dockerfile
+
+Volumes - a special location outside container filesystem.
+
+Bind mounts - mapping of a host file/directory to a container.
+- Can’t use in docker file. Must be use during runtime.
+- Run -v  <host path>:<container path>
+
+Named volumes - friendly way to assign volumes to containers. Used by (-v <volume name>:<volume path>)
+
+Docker volume create - required to do this before doing “docker run” to use custom drivers and labels.
+
+Docker Compose 
+-  a combination of CLI tool and configuration files.
+- Configure relationships between containers
+- Save docker container run settings in an easy-to-read file
+- Create one-liner developer environment startups
+- Comprised of 2 separate but related things:
+    - 1. YAML file - describes solutions for (containers, networks, variables, and other configs)
+    - 2. CLI tool docker-compose - used for local dev/test automation with YAML files.
+
+Swarm mode
+- Clustering solution built inside docker.
+- Not enabled by default.
+
+Docker swarm init 
+- To enable swarm for docker
+- creates a manager
+- Certificate is created for manager and for use of workers.
+- Creates Raft database to store root CA, configs, and secrets.
+
+Uses “docker service” command instead of the usual “docker run”
+- Docker service create <image>
+- Docker service update <cotainer> <options>
+
+Overlay Multi-Host Networking
+- Creating a swarm wide bridge network. Intra-swarm communication.
+
+Routing Mesh
+- Incoming packets for a service to proper task.
+- Spans all nodes in swarm
+- Load balances swarm services across their tasks
+- Uses a VIP. Container-to-container in an overlay network
+- External traffic incoming to published ports (all nodes listen)
+- Stateless load balancer
+- Layer 3 load balancer. NOT on layer 4 (DNS)
+    - Need to use load balancer app such as Haproxy etc.
+
+Swarm Stacks
+- A new layer of abstraction.
+- Accepts compose files as their declarative definition for services, networks, and volumes
+- Use “docker stack deploy” rather than “docker service create”
+- Manages all those objects for us, including overlay network per stack. 
+- New deploy: keen compose file. Can’t do build:
+- Compose now ignores deploy; swarm ignores build:
+- Docker-compose cli not needed on swarm server.
+- Looks like a compose file.
+- Needs to be at version 3 or higher.
+- Uses deploy with so many options.
+
+Docker stack deploy -c <compose file> <name>
+
+Docker stack services <name>
+Docker stack ps <name>
+- Shows complete list of containers for a certain service on stack.
+
+Secret Storage
+- Easiest “secure” solution for storing secrets in Swarm
+- Supports generic strings or binary content up to 500kb in size.
+- Doesn’t require apps to be written
+- As of docker 1.13.0 Swarm Raft DB is encrypted on disk
+- Only stored on disk on Manager nodes.
+- Default is Managers and Workers “control plane” is TLS + Mutual Auth
+- Secrets is first stored in Swarm then assigned to a Service(s)
+- Only containers in assigned Service(s) can see them.
+- They look likes files in container but are actually in-memory fs.
+    - /run/secrets/<secret name/alias>
+- Local docker-compose can use file-based secrets, but not secure.
+- Needs to use version 3.1 release
+
+Docker secret create <name> <db file>
+Echo “password” | docker secret create psql_pass -
+

@@ -1,0 +1,119 @@
+Mesos Lab
+
+(master) mesos-labs $ vagrant plugin install vagrant-vbguest vagrant-hostmanager
+Installing the 'vagrant-vbguest' plugin. This can take a few minutes...
+Fetching: micromachine-2.0.0.gem (100%)
+Fetching: vagrant-vbguest-0.16.0.gem (100%)
+Installed the plugin 'vagrant-vbguest (0.16.0)'!
+Installing the 'vagrant-hostmanager' plugin. This can take a few minutes...
+Fetching: vagrant-hostmanager-1.8.9.gem (100%)
+Installed the plugin 'vagrant-hostmanager (1.8.9)'!
+
+(master) mesos-labs $ vagrant plugin list
+vagrant-hostmanager (1.8.9, global)
+vagrant-vbguest (0.16.0, global)
+
+(master) mesos-labs $ pwd
+/Users/roel/Projects/mesos-labs
+(master) mesos-labs $ ls -la
+total 48
+drwxr-xr-x   8 roel  staff    256 Oct 11 14:22 .
+drwxr-xr-x   7 roel  staff    224 Oct 11 14:17 ..
+-rw-r--r--   1 roel  staff  12288 Oct 11 14:22 .Vagrantfile.swp
+drwxr-xr-x  14 roel  staff    448 Oct 11 14:21 .git
+-rw-r--r--   1 roel  staff     42 Oct 11 14:17 .gitignore
+drwxr-xr-x   4 roel  staff    128 Oct 11 14:17 .scripts.d
+-rw-r--r--   1 roel  staff   3555 Oct 11 14:17 README.md
+-rw-r--r--   1 roel  staff   2689 Oct 11 14:17 Vagrantfile
+
+(master) mesos-labs $ git pull origin master
+From gitlab.com:opswerks/mesos-labs
+ * branch            master     -> FETCH_HEAD
+Already up to date.
+
+Scripts definitions:
+
+.scripts.d/.init.d/ubuntu
+- Update repo and services.
+- Cleanup of stale packages.
+- Install puppet
+- 
+.scripts.d/.init.d/mesos-base
+- Register repo keys
+- Create repo file
+- Update mesos repo
+- Install Java
+- Cleanup repo
+
+.scripts.d/.init.d/mesos-master
+- Backup original ZooKepeer (ZK) config file.
+- Initialize ZK ID file /etc/zookeeper/conf/myid
+- Starts ZK
+- Updates mesos master config /etc/mesos/zk
+- Sets mesos quorum config file /etc/mesos-master/quorum
+- Makes mesos master persistent
+- Starts mesos master
+
+.scripts.d/.init.d/mesos-agent
+- Sets mesos agent connection to ZK (/etc/mesos/zk)
+- Sets mesos agent IP file (/etc/mesos-slave/ip) using facter 
+- Sets mesos agent hostname file (/etc/mesos-slave/hostname)
+- Sets mesos agent docker containerizer file (/etc/mesos-slave/containerizers)
+- Sets mesos agent executor file (/etc/mesos-slave/executor_environment_variables)
+- Make mesos agent persistent
+- Starts mesos agent.
+
+.scripts.d/.init.d/docker
+- Removes legacy docker installations.
+- Installs prereqc (apt-transport-https ca-certificates curl software-properties-common)
+- Install GPG keys
+- Adds apt docker repository
+- Updates repo and services
+- Installs docker-ce
+- Cleanup repos
+
+.scripts.d/.init.d/marathon
+- Installs marathon
+- Configure marathon (/etc/default/marathon)
+- Make marathon persistent
+- Starts marathon
+
+.scripts.d/.init.d/marathon-user
+- Sets group for marathon
+- Add user marathon
+
+
+Master details:
+Hostname: mesos-master.opswerks 
+IP: 192.168.200.111
+OS: Ubuntu
+.scripts.d/.init.d/ubuntu
+.scripts.d/.init.d/mesos-base
+.scripts.d/.init.d/mesos-master
+.scripts.d/.init.d/mesos-agent
+.scripts.d/.init.d/docker
+.scripts.d/.init.d/marathon
+
+Agent details:
+Hostname: mesos-agent.opswerks
+IP: 192.168.200.121
+OS: Ubuntu
+.scripts.d/.init.d/ubuntu
+.scripts.d/.init.d/mesos-base
+.scripts.d/.init.d/mesos-agent
+.scripts.d/.init.d/docker
+.scripts.d/.init.d/marathon-user
+
+(master) mesos-labs $ vagrant status
+Current machine states:
+master                    running (virtualbox)
+agent                     running (virtualbox)
+
+
+Zookeeper - Distributed coordination framework. Used by mesos for master leader election and master discovery by agents.
+
+Marathon - Manages long running process. 
+Framework - consist of scheduler and executor which provides the application management intelligence. Marathon is one kind of its implementation.
+HAproxy - for load balancing and service discovery
+
+
