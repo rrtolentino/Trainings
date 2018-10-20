@@ -1,0 +1,103 @@
+Splunk 
+
+Splunk 
+- is an IT operations tool that consumes machine-data in real time.
+- Operational Intelligence
+- Data visualisation
+- Alerting
+- Reporting
+- Investigation
+- Can handle structured and unstructured data.
+
+Indexer - categorizes and applies metadata to the data. Allow users to create dashboards, alerts, and reports based on the data.
+
+Basic Components of Splunk
+- Search head
+    - Handles search requests and consolidating results back to the user
+- Indexer
+    - Takes raw data from forwarders, turns it into events, and places the results into an index, which is stored in a bucket.
+- Forwarder
+    - Forwards raw data to other parts of the deployment.
+    - 2 kinds of forwarders:
+        - Universal : minimal configuration required.
+        - Heavy: fine tuned for the needs.
+
+Splunk Deployment Models
+- Variety of configurations
+- Data pipeline has four components
+    - Input
+    - Parsing
+    - Indexing
+    - Searching
+
+Kinds of Deployment Models
+1. Departmental Deployment - A single search head/indexer.  Upto 10 forwarders. Appropriate for up to 10 users.
+￼
+2. Small Enterprise Deployment - A single search head. 2-3 indexers. 100 to 200 forwarders.
+￼
+3. Large Enterprise Deployment - Clustered Search Head. Lots of indexers. Thousands of forwarders. A deployer.
+￼
+
+￼
+
+Splunk Apps
+- Apps extend Splunk’s functionality
+- Apps can be created  by third parties, individuals, or Splunk
+- Apps that are built by Splunk carry the “Splunk build” logo
+- Apps that re certified by Splunk carry the “Splunk certified” logo
+- Other apps may not have passed the Splunk certification, but that doesn’t mean they aren’t useful.
+- An app is a collection of Splunk configuration files.
+- Add-ons specify data collection, but do not have GUIs because the are part of the larger app
+- Downloaded from splunkbase.com
+- Most apps are free, however there are a few premiums apps for which you’ll need a license. These includes:
+    - Splunk app for enterprise security
+    - Splunk app for PCI compliance
+    - Splunk app for VMware
+    - Splunk app for Microsoft Exchange
+
+
+Dealing with Time
+
+￼
+￼
+
+Search Modes
+1. Fast - no field discovery, except the metadata fields. Use if you know exactly what fields you need and can specify them in the search string.
+2. Smart - returns the best results for whatever search you are running
+3. Verbose - discover all fields it can. Use if you are not sure what fields you will want to report on.
+
+Intermediate Searching
+
+TOP
+- Top <field>
+- Returns the most common values of a given field.
+- Defaults to 10 fields
+- Can be combined with a limit=number
+- Automatically builds a table with count and percent columns
+- Can be used with multiple fields.
+    - Return the top value for a field organised by another field
+
+RARE
+- Rare <field>
+- Opposite of top
+- Returns the least common values of field
+- Options are identical to top
+
+STATS
+- Stats <function(field)> BY <field(s)>
+- Some common functions (count, avg, max, min, sum, values, list, etc.)
+
+
+Data Models
+- Make machine data easier to use
+- Simplify complex data through abstraction
+- Group specific types of data
+
+Objects
+- Events: most commonly used 
+- Searches: splunk searches that include transforming commands, etc.
+- Transactions: combine multiple events from one or many sources into a single event.
+
+Important Configuration Files
+￼
+
